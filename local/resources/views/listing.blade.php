@@ -1,7 +1,82 @@
 @extends('layout')
 
 @section('content')
+    <!--====== HEADER ONE PART START ======-->
 
+    <header class="header-area">
+
+        <div class="navbar-area navbar-one navbar-transparent">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <nav class="navbar navbar-expand-lg">
+                            <a class="navbar-brand" href="#">
+                                Rick and Morty Characters
+                            </a>
+
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarOne" aria-controls="navbarOne" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                            </button>
+
+                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
+                                <ul class="navbar-nav m-auto">
+                                    <li class="nav-item active">
+                                        <a class="page-scroll" href="#home">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="page-scroll" href="#pricing">Characters</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav> <!-- navbar -->
+                    </div>
+                </div> <!-- row -->
+            </div> <!-- container -->
+        </div>
+
+        <div id="home" class="header-content-area d-flex align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="header-wrapper">
+                            <div class="header-content-form s002">
+                                <form method="GET" action="{!!url('listing')!!}">
+                                    <meta name="csrf-token" content="{{ csrf_token() }}">
+                                    <fieldset>
+                                        <legend>SEARCH CHARACTERS</legend>
+                                    </fieldset>
+                                    <div class="inner-form">
+                                        <div class="input-field first-wrap">
+                                            <input id="keyword" name="keyword" type="text" placeholder="Enter Name" value="{!!$output['info']['keyword']!!}">
+                                        </div>
+                                        <div class="input-field first-wrap">
+                                            <input id="species" name="species" type="text" placeholder="Enter Species" value="{!!$output['info']['species']!!}">
+                                        </div>
+                                        <div class="input-field fifth-wrap">
+                                            <!--<button class="btn-search" type="button">SEARCH</button>-->
+                                            <input type="submit" value="SEARCH" class="btn-search">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div> <!-- header content -->
+                            <div class="header-image d-none d-lg-block">
+                                <div class="image">
+                                    <img src="{!!url('assets/images/header.png')!!}" alt="Header">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- row -->
+            </div> <!-- container -->
+            <div class="header-shape">
+                <img src="{!!url('assets/images/header-shape.svg')!!}" alt="shape">
+            </div> <!-- header-shape -->
+        </div> <!-- header content area -->
+    </header>
+
+    <!--====== HEADER ONE PART ENDS ======-->
 <section id="pricing" class="pricing-area pt-95 pb-100">
         <div class="container">
             <div class="row justify-content-center">
@@ -12,12 +87,8 @@
                     </div> <!-- section title -->
                 </div>
             </div> <!-- row -->
-            
-
-            
             <div class="row justify-content-center">  
                 @foreach($output['results'] as $key=>$value)
-                
                 <div class="col-lg-4 col-md-7 col-sm-9">
                     <div class="pricing mt-40">
                         <div class="pricing-baloon">
@@ -47,6 +118,38 @@
                 @endforeach         
                 
             </div> <!-- row -->
+            <div class="row mb-5 paging-bottom">
+                <div class="col-md-12">
+                    <div class="block-27">
+                        
+                        <ul>
+                        @if($output['info']['prepage']>0)
+                            <li class="active"><a href="{!!url('listing?page=').$output['info']['prepage'].$output['info']['urlstr']!!}">&lt;</a></li>
+                        @else
+                            <li><a href="#">&lt;</a></li>
+                        @endif
+                        @if($output['info']['curpage']<=5)
+                            @for($i=1;$i<=5;$i++)
+                                <li @if($output['info']['curpage'] == $i)class="active" @endif>
+                                    <a href="{!!url('listing?page=').$i.$output['info']['urlstr']!!}"><span>{!!$i!!}</span></a>
+                                </li>
+                            @endfor
+                        @else
+                            @for($i=$output['info']['curpage']-2;$i<=$output['info']['curpage']+2;$i++)
+                                <li @if($output['info']['curpage'] == $i)class="active" @endif>
+                                    <a href="{!!url('listing?page=').$i.$output['info']['urlstr']!!}"><span>{!!$i!!}</span></a>
+                                </li>
+                            @endfor
+                        @endif
+                        @if($output['info']['nexpage']!='')
+                            <li class="active"><a href="{!!url('listing?page=').$output['info']['nexpage'].$output['info']['urlstr']!!}">&gt;</a></li>
+                        @else
+                            <li><a href="#">&gt;</a></li>
+                        @endif
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div> <!-- container -->
     </section>
 @stop

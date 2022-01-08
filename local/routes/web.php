@@ -14,4 +14,4 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/listing', 'CharactersController@listing');
+Route::any('/listing', 'CharactersController@listing');
